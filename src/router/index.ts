@@ -4,14 +4,14 @@ import { createWebHistory, createRouter } from 'vue-router'
 // const userStore = useCounterStore()
 
 import login from './models/Login'
-// import Layout from './modles/Layout'
+import Layout from './models/Layout'
 
 // import Login from '../view/Login/index.vue'
 const routes = createRouter({
     history: createWebHistory(),
     routes: [		
         login,
-        // Layout,
+        Layout,
 		{
 			path:'/:catchAll(.*)',
 			redirect:'/404'
@@ -24,18 +24,18 @@ const routes = createRouter({
 })
 
 // // 全局守卫：登录拦截 本地没有存token,请重新登录
-// routes.beforeEach((to, from, next) => {
-// 	// 判断有没有登录
-// 	if (!localStorage.getItem('Shoptoken')) {
-// 		if (to.name == "login" || to.name == "404") {
-// 			next();
-// 		} else {
-// 			routes.push('login')
-// 		}
-// 	} else {
-// 		next();
-// 	}
-// });
+routes.beforeEach((to, from, next) => {
+	// 判断有没有登录
+	if (!localStorage.getItem('CRMtoken')) {
+		if (to.name == "login" || to.name == "404") {
+			next();
+		} else {
+			routes.push('login')
+		}
+	} else {
+		next();
+	}
+});
 
 
 export default routes
