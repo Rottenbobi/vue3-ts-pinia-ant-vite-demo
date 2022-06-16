@@ -80,7 +80,7 @@ const onFinish = async(values: any) => {
     // console.log(formState.value)
     try {
        const res =  await Login.userLogin(formState.value)
-       console.log(res)
+    //    console.log(res)
        Login.getToken(`Bearer ${res.data.token}`)
     } catch (error) {
         if(error instanceof Error){
