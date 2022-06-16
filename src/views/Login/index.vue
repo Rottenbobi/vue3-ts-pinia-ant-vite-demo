@@ -63,9 +63,9 @@ import { message } from 'ant-design-vue';
 import { ref, reactive, watch } from 'vue'
 import { UserOutlined, InfoCircleOutlined, LockOutlined, VerifiedOutlined } from '@ant-design/icons-vue';
 import { LoginStore } from "@/state/Login"
-
+import {useRouter} from 'vue-router'
 const Login = LoginStore()
-
+const router = useRouter()
 let yzmimg = ref('')
 
 let formState = ref({
@@ -82,6 +82,7 @@ const onFinish = async(values: any) => {
        const res =  await Login.userLogin(formState.value)
     //    console.log(res)
        Login.getToken(`Bearer ${res.data.token}`)
+       router.push('/')
     } catch (error) {
         if(error instanceof Error){
             message.error(error.message)
