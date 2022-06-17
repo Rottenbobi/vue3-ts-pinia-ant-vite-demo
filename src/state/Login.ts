@@ -18,7 +18,7 @@ import *as LoginD from '@/dts/Login.d'
       },
       getToken(payload:string){
         this.token = payload
-        console.log(this.token);
+        // console.log(this.token);
       }
     },
     persist: {

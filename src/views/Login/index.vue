@@ -81,7 +81,7 @@ const onFinish = async(values: any) => {
     try {
        const res =  await Login.userLogin(formState.value)
     //    console.log(res)
-       Login.getToken(`Bearer ${res.data.token}`)
+       Login.getToken(`${res.data.token}`)
        router.push('/')
     } catch (error) {
         if(error instanceof Error){
