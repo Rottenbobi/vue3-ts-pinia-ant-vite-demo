@@ -10,7 +10,7 @@ request.interceptors.request.use((config) => {
         if (localStorage.getItem('CRMtoken')) {
             let token = JSON.parse(localStorage.getItem('CRMtoken') as string)
             // console.log(token);
-            let atoken = `Bearer ${token.token.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\>|\/|\?]/g,"")}` 
+            let atoken = `Bearer ${token.token}` 
             // console.log(atoken);
             config.headers.Authorization = atoken
         }

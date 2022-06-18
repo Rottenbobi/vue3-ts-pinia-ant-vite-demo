@@ -1,18 +1,16 @@
 <template>
     <a-layout style="min-height: 100vh">
         <!-- 左边导航 -->
-        <a-layout-sider v-model:collapsed="collapsed" collapsible>
-
+        <a-layout-sider v-model:collapsed="collapsed">
+            <Menus></Menus>
         </a-layout-sider>
         <a-layout>
-            <a-layout-header style="background: #f9f9f9; padding: 0">
+            <a-layout-header style="display:flex;  align-items:center; background: #f9f9f9; padding: 0">
+                <column-width-outlined @click="collapsed = !collapsed" class="bian"/>
                 <Bread :father="'活动管理'"></Bread>
             </a-layout-header>
             <a-layout-content style="margin: 0 16px">
-                <!-- <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
-        </a-breadcrumb> -->
+
 
                 <div :style="{ padding: '24px', background: '#fff', minHeight: '80%', margin: '20px' }">
                     <router-view></router-view>
@@ -28,28 +26,17 @@ import {
     UserOutlined,
     TeamOutlined,
     FileOutlined,
+    ColumnWidthOutlined
 } from '@ant-design/icons-vue';
 import Bread from '@/components/Bread.vue'
 import { ref } from 'vue';
 import { Layoutstore } from '@/state/Layout'
-import {message} from 'ant-design-vue'
-
+import { message } from 'ant-design-vue'
+import Menus from './components/menus.vue'
 let collapsed = ref<boolean>(false)
-let selectedKeys = ref<string[]>(['1'])
+
 const layout = Layoutstore()
 
-const getRouters = async() =>{
-    try {
-        const res = await layout.getRouters()
-        console.log(res);
-        
-    } catch (error) {
-        if(error instanceof Error){
-            message.error(error.message)
-        }
-    }
-}
-getRouters()
 </script>
 <style>
 #components-layout-demo-side .logo {
@@ -64,5 +51,8 @@ getRouters()
 
 [data-theme='dark'] .site-layout .site-layout-background {
     background: #141414;
+}
+.bian{
+    margin-left: 15px;
 }
 </style>
