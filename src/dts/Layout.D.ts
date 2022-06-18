@@ -12,3 +12,7 @@ interface Imeta {
     noCache:boolean;
     title:string;
 }
+
+export interface Iuser {
+    nickName:string;
+}

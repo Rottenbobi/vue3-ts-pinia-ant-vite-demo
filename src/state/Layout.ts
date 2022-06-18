@@ -17,6 +17,9 @@ export const Layoutstore = defineStore('layout', {
     },
     SetrouterList(payload: Array<LayoutD.IrouterList>) {
       this.routerList = payload
+    },
+    getUserInfo() {
+      return request.get('/getInfo')
     }
   },
 })
