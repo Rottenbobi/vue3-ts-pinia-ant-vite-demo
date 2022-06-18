@@ -1,8 +1,17 @@
 export interface IrouterList {
-    component:string;
-    hidden:boolean;
+    component:any;
+    hidden?:boolean;
     path:string;
-    meta:Imeta;
+    meta?:Imeta;
+    name?:string;
+    children?:Array<IrouterList>
+}
+
+export interface IrouterList1 {
+    component:any;
+    hidden?:boolean;
+    path:string;
+    meta?:Imeta;
     name?:string;
     children:Array<IrouterList>
 }
@@ -16,3 +25,4 @@ interface Imeta {
 export interface Iuser {
     nickName:string;
 }
+
