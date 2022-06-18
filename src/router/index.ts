@@ -50,6 +50,14 @@ routes.beforeEach(async (to, from, next) => {
 					}
 				})
 				routes.addRoute("layout", Layout as any)
+				routes.addRoute('1', {
+					path: '/:catchAll(.*)',
+					redirect: '/404'
+				})
+				routes.addRoute('404', {
+					path: '/404',
+					component: () => import('@/views/404/index.vue')
+				})
 				// {
 				// 	path: '/:catchAll(.*)',
 				// 	redirect: '/404'
@@ -58,7 +66,7 @@ routes.beforeEach(async (to, from, next) => {
 				// 	path: '/404',
 				// 	component: () => import('@/views/404/index.vue')
 				// },
-				// console.log(to.path);
+
 
 			} catch (error) {
 
