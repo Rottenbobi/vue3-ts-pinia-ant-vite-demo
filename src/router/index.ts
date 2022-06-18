@@ -29,48 +29,46 @@ routes.beforeEach(async (to, from, next) => {
 		}
 	} else {
 		const LayoutS = Layoutstore()
-		if (LayoutS.routerList !== []) {
-			const getRouters = async () => {
-				try {
-					const res = await LayoutS.getRouters()
-					// console.log(res);
-					// routerList.value = res.data.data
-					if (LayoutS.routerList.length >0) return next()
-					LayoutS.SetrouterList(res.data.data)
-					// console.log(routerList.value );
-					LayoutS.routerList.forEach(item => {
-						if (item.children) {
-							item.children.forEach((child: LayoutD.IrouterList) => {
-								Layout.children.push({
-									path: `/${child.path}`,
-									component: defineAsyncComponent(() => import(/* @vite-ignore */`@/views/${child.component}`)),//vue3 必须使用defineAsyncComponent 不然就会报错
-									name: child.name,
-								})
+		const getRouters = async () => {
+			try {
+				const res = await LayoutS.getRouters()
+				// console.log(res);
+				// routerList.value = res.data.data
+				if (LayoutS.routerList.length > 0) return next()
+				LayoutS.SetrouterList(res.data.data)
+				// console.log(routerList.value );
+				LayoutS.routerList.forEach(item => {
+					if (item.children) {
+						item.children.forEach((child: LayoutD.IrouterList) => {
+							Layout.children.push({
+								path: `/${child.path}`,
+								component: defineAsyncComponent(() => import(/* @vite-ignore */`@/views/${child.component}`)),//vue3 必须使用defineAsyncComponent
+								name: child.name,
 							})
-	
-						}
-					})
-					routes.addRoute("layout", Layout as any)
-					// {
-					// 	path: '/:catchAll(.*)',
-					// 	redirect: '/404'
-					// },
-					// {
-					// 	path: '/404',
-					// 	component: () => import('@/views/404/index.vue')
-					// },
-					// console.log(to.path);
-	
-				} catch (error) {
-	
-				}
+						})
+
+					}
+				})
+				routes.addRoute("layout", Layout as any)
+				// {
+				// 	path: '/:catchAll(.*)',
+				// 	redirect: '/404'
+				// },
+				// {
+				// 	path: '/404',
+				// 	component: () => import('@/views/404/index.vue')
+				// },
+				// console.log(to.path);
+
+			} catch (error) {
+
 			}
-			await getRouters()	
-			next(to.path) // to.path 路由已知缺陷 动态路由必须next(to.path) 但是加上就会触发递归照成的死循环
-		}else{
-			next()
 		}
-		
+		await getRouters()
+		next(to.path) // to.path 路由已知缺陷 动态路由必须next(to.path) 但是加上就会触发递归照成的死循环
+
+
+
 	}
 
 });
