@@ -81,7 +81,10 @@ const onFinish = async(values: any) => {
     try {
        const res =  await Login.userLogin(formState.value)
     //    console.log(res)
+       let a = Date.now(); 
+       localStorage.setItem('time',a+'')
        Login.getToken(`${res.data.token}`)
+    //    Login.getTime(a)
        router.push('/')
     } catch (error) {
         if(error instanceof Error){

@@ -14,7 +14,6 @@ const routes = createRouter({
 	history: createWebHistory(),
 	routes: [
 		login,
-
 	]
 })
 
@@ -29,13 +28,24 @@ routes.beforeEach(async (to, from, next) => {
 		}
 	} else {
 		const LayoutS = Layoutstore()
+		if (LayoutS.routerList.length > 0) {
+			const crm = Number(localStorage.getItem('time'))
+			let nowtime = Date.now()
+			if (nowtime - crm > 3600000) {
+				localStorage.removeItem('CRMtoken')
+				localStorage.removeItem('time')
+				next('/login')
+			}
+			return next()
+		}
 		const getRouters = async () => {
 			try {
 				const res = await LayoutS.getRouters()
-				if (LayoutS.routerList.length > 0) return next()
+
 				LayoutS.SetrouterList(res.data.data)
 				LayoutS.routerList.forEach(item => {
 					if (item.children) {
+
 						item.children.forEach((child: LayoutD.IrouterList) => {
 							Layout.children.push({
 								path: `${child.path}`,

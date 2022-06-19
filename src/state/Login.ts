@@ -4,7 +4,7 @@ import *as LoginD from '@/dts/Login.d'
  export const LoginStore = defineStore('counter', {
     state: () => {
         return {
-          token:''
+          token:'',
         }
     },
     // 也可以定义为
@@ -19,7 +19,10 @@ import *as LoginD from '@/dts/Login.d'
       getToken(payload:string){
         this.token = payload
         // console.log(this.token);
-      }
+      },
+      // getTime(payload:number){
+      // this.time = payload
+      // }
     },
     persist: {
       // 修改存储中使用的键名称，默认为当前 Store的 id
