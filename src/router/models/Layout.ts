@@ -8,7 +8,7 @@ const layout = {
     name: 'layout',
     path: '/',
     component: Layout,
-    // redirect:'/clue',
+    redirect:'/clue',
     children:[] as  LayoutD.IrouterList[],
 }
 export default layout

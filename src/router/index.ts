@@ -39,8 +39,9 @@ routes.beforeEach(async (to, from, next) => {
 						item.children.forEach((child: LayoutD.IrouterList) => {
 							Layout.children.push({
 								path: `${child.path}`,
-								component: defineAsyncComponent(() => import(/* @vite-ignore */`@/views/${child.component}.vue`)),//vue3 必须使用defineAsyncComponent
-								name: child.name,
+								// component: defineAsyncComponent(() => import(/* @vite-ignore */`@/views/${child.component}.vue`)),//vue3 必须使用defineAsyncComponent
+								component: () => import(/* @vite-ignore */`../views/${child.component}.vue`),//vue3 必须使用defineAsyncComponent
+								name: child.meta?.title,
 							})
 						})
 
