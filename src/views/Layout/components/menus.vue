@@ -1,16 +1,17 @@
 <template>
-    <a-menu id="dddddd" v-model:openKeys="openKeys"  :theme="'dark'" mode="inline">
-        <template v-for="item in routerList" :key="item.children[0].name">
-            <template v-if='item.children&&item.children.length === 1&&item.meta'>
-                <a-menu-item :key="item.children[0].name">
-                    <template #icon >
-                        <dashboard-outlined v-if='item.children' @click="router.push(`/${item.children[0].path}`)"/>
+    <a-menu id="dddddd" v-model:openKeys="openKeys" :theme="'dark'" mode="inline">
+        <template v-for="(item, index) in layout.routerList" :key="item.children[0].name">
+            <template v-if='item.children && item.children.length === 1 && item.meta'>
+                <a-menu-item :key="item.children[0].name" @click="router.push(`/${item.children[0].path}`)">
+                    <template #icon>
+                        <dashboard-outlined />
                     </template>
+
                     {{ item.meta.title }}
                 </a-menu-item>
             </template>
-            <template v-else-if="item.children&&item.children.length >1 &&item.meta">
-                <a-sub-menu :key="item.children[0].name">
+            <template v-else-if="item.children && item.children.length > 1 && item.meta">
+                <a-sub-menu :key="index" @titleClick="titleClick">
                     <template #icon>
                         <MailOutlined />
                     </template>
@@ -30,7 +31,7 @@
  
 <script lang='ts' setup>
 import { ref, reactive, watch } from 'vue'
-import { MailOutlined, QqOutlined, AppstoreOutlined, SettingOutlined ,DashboardOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, QqOutlined, AppstoreOutlined, SettingOutlined, DashboardOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { message } from 'ant-design-vue'
 import { Layoutstore } from '@/state/Layout'
@@ -44,21 +45,10 @@ watch(
     val => {
         console.log('openKeys', val);
     })
-let routerList = ref<Array<LayoutD.IrouterList1>>([])
-const getRouters = async () => {
-    try {
-        const res = await layout.getRouters()
-        // console.log(res);
-        routerList.value = res.data.data
-        layout.SetrouterList(routerList.value)
-        // console.log(routerList.value );
-    } catch (error) {
-        if (error instanceof Error) {
-            message.error(error.message)
-        }
-    }
+const titleClick = (e: Event) => {
+
+    console.log(e);
 }
-getRouters()
 </script>
  
 <style scoped>
