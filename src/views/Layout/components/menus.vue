@@ -11,7 +11,7 @@
                 </a-menu-item>
             </template>
             <template v-else-if="item.children && item.children.length > 1 && item.meta">
-                <a-sub-menu :key="index" @titleClick="titleClick">
+                <a-sub-menu :key="index">
                     <template #icon>
                         <MailOutlined />
                     </template>
@@ -21,7 +21,11 @@
                             <QqOutlined />
                         </template>
                         <template #title></template>
-                        <a-menu-item :key="item1.name" v-if="item1.meta">{{ item1.meta.title }}</a-menu-item>
+                        <a-menu-item :key="item1.name" v-if="item1.meta && !item1.children" @click='router.push(`/${item1.path}`)'>{{ item1.meta.title }}
+                        </a-menu-item>
+                        <a-sub-menu v-if="item1.meta && item1.children" :key="item1.name" :title="item1.meta.title">
+                            <a-menu-item :key="item2.name" v-for="(item2,index) in item1.children" @click='router.push(`/${item2.path}`)'> {{ item2.meta?.title }}</a-menu-item>
+                        </a-sub-menu>
                     </a-menu-item-group>
                 </a-sub-menu>
             </template>
@@ -45,10 +49,7 @@ watch(
     val => {
         console.log('openKeys', val);
     })
-const titleClick = (e: Event) => {
 
-    console.log(e);
-}
 </script>
  
 <style scoped>

@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import { defineAsyncComponent } from 'vue'
 import { Layoutstore } from '@/state/Layout'
 import * as LayoutD from '@/dts/Layout.D'
 
@@ -28,30 +27,40 @@ routes.beforeEach(async (to, from, next) => {
 		}
 	} else {
 		const LayoutS = Layoutstore()
-		if (LayoutS.routerList.length > 0) {
-			const crm = Number(localStorage.getItem('time'))
-			let nowtime = Date.now()
-			if (nowtime - crm > 3600000) {
-				localStorage.removeItem('CRMtoken')
-				localStorage.removeItem('time')
-				next('/login')
-			}
-			return next()
+		const crm = Number(localStorage.getItem('time'))
+		let nowtime = Date.now()
+		if (nowtime - crm > 3600000) {
+			localStorage.removeItem('CRMtoken')
+			localStorage.removeItem('time')
+			next('/login')
 		}
+
 		const getRouters = async () => {
+			if (LayoutS.routerList.length > 0) {
+					return next()
+				}
 			try {
 				const res = await LayoutS.getRouters()
-
 				LayoutS.SetrouterList(res.data.data)
 				LayoutS.routerList.forEach(item => {
 					if (item.children) {
-
 						item.children.forEach((child: LayoutD.IrouterList) => {
+							if (child.children) {
+								child.children = child.children.map(child1 => {
+									return {
+										path: child1.path,
+										component: () => import(/* @vite-ignore */`../views/${child1.component}.vue`),//vue3 必须使用defineAsyncComponent
+										name: child1.meta?.title,
+										meta: child1.meta
+									}
+								})
+							}
 							Layout.children.push({
 								path: `${child.path}`,
 								// component: defineAsyncComponent(() => import(/* @vite-ignore */`@/views/${child.component}.vue`)),//vue3 必须使用defineAsyncComponent
 								component: () => import(/* @vite-ignore */`../views/${child.component}.vue`),//vue3 必须使用defineAsyncComponent
 								name: child.meta?.title,
+								children: child.children
 							})
 						})
 
@@ -71,7 +80,11 @@ routes.beforeEach(async (to, from, next) => {
 			}
 		}
 		await getRouters()
-		next(to.path) // to.path 路由已知缺陷 动态路由必须next(to.path) 但是加上就会触发递归照成的死循环
+		// next(to.path) 
+		next({ ...to })
+
+		// to.path 路由已知缺陷 动态路由必须next(to.path) 但是加上就会触发递归照成的死循环
+		// next({...to,replace:true})
 	}
 
 });
